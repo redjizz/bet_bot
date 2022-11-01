@@ -141,7 +141,9 @@ export async function execute(interaction) {
         }
     })
 
-    const collector5 = new InteractionCollector(interaction.client, {time : 120000})
+    const filter4 = i => i.customId == 'participateModal ' + interaction.id
+
+    const collector5 = new InteractionCollector(interaction.client, {filter: filter4, time : 120000})
 
     collector5.on('collect', async i =>{
         try {
