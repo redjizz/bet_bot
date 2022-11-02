@@ -1,6 +1,7 @@
 import * as mariadb from 'mariadb'
 import {bddLogs, guildId} from '../config.js'
 import { getBetResults } from '../functions/getBetResults.js';
+import { getCotes as getCotesFun } from '../functions/getCotes.js';
 import { BDDname } from './BDDname.js';
 
 const tempPool = mariadb.createPool(bddLogs);
@@ -80,4 +81,11 @@ export async function getPoints(interaction){
     const p = await conn.query(`select points from users where guildId = ${interaction.guild.id} and guildMemberId = ${interaction.member.id}`)
     if(conn){await conn.end()}
     return p[0].points
+}
+
+export async function getCotes(eventId){
+    const conn = await BDDconnect(BDDname)
+    const data = await conn.query(`select * from registry where eventId = "${eventId}"`)
+    if(conn){await conn.end()}
+    return getCotesFun(data)
 }
