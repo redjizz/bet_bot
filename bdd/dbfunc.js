@@ -32,6 +32,7 @@ export async function placeBet(id, guildMemberId, answer, points, guildId){
     const conn = await BDDconnect(BDDname)
     await conn.query(`insert into registry (eventId, guildMemberId, answer, points) values (${id}, ${guildMemberId}, "${answer}", ${points})`)
     await updatePoints(-points, guildMemberId, guildId)
+    await updateAnswerPoints(id, answer, points)
     if(conn){await conn.end()}
 }
 
@@ -88,4 +89,18 @@ export async function getCotes(eventId){
     const data = await conn.query(`select * from registry where eventId = "${eventId}"`)
     if(conn){await conn.end()}
     return getCotesFun(data)
+}
+
+export async function updateAnswerPoints(eventId, answer, points){
+    const conn = await BDDconnect(BDDname)
+    await conn.query(`select * from betanswers where eventId = "${eventId}" and ind = ${answer}`)
+            .then(resp => conn.query(`update betanswers set points = ${resp[0].points + points} where eventId = "${eventId}" and ind = ${answer}`)).catch(err => console.error(err))
+    if(conn){await conn.end()}
+}
+
+export async function getAnswerPoints(eventId, answer){
+    const conn = await BDDconnect(BDDname)
+    const p = await conn.query(`select points from betanswers where eventId = ${eventId} and ind = ${answer}`)
+    if(conn){await conn.end()}
+    return p[0].points
 }

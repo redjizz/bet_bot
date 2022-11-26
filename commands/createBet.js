@@ -1,6 +1,7 @@
 import { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ModalBuilder, TextInputBuilder} from '@discordjs/builders';
 import { ButtonStyle, EmbedBuilder, InteractionCollector, SelectMenuBuilder, TextInputStyle } from 'discord.js';
-import { createBet, getCotes, getPoints, placeBet } from '../bdd/dbfunc.js';
+import { createBet, getAnswerPoints, getCotes, getPoints, placeBet } from '../bdd/dbfunc.js';
+import { printCotes } from '../functions/printCotes.js';
 
 
 export const data = new SlashCommandBuilder()
@@ -115,12 +116,13 @@ export async function execute(interaction) {
                                 try {
                                     if (l.customId !== 'participateSelect ' + k.id) return
                                     const userPoints = await getPoints(l)
+                                    const ansPoints = await getAnswerPoints(interaction.id, l.values[0])
                                     const mod = new ModalBuilder()
                                         .setTitle(`Vous disposez de ${userPoints} points.`)
                                         .setCustomId("participateModal " + l.id)
                                     const inp = new TextInputBuilder()
                                         .setCustomId('mise ' + l.values[0])
-                                        .setLabel(`Réponse : ${interaction.answers[l.values[0] - 1].value}`)
+                                        .setLabel(`Réponse : ${interaction.answers[l.values[0] - 1].value} (Points misés : ${ansPoints})`)
                                         .setPlaceholder('Points à miser')
                                         .setStyle(TextInputStyle.Short)
                                     const inpRow = new ActionRowBuilder().addComponents(inp)
@@ -137,6 +139,7 @@ export async function execute(interaction) {
                                             await m.deferUpdate()
                                             nbr++
                                             await placeBet(interaction.id, m.member.id, parseInt(m.fields.components[0].components[0].customId.split(' ')[1]), parseInt(m.fields.fields.at(0).value), interaction.guild.id)
+                                            await printCotes(interaction, embed)
                                             await k.editReply({content : `Vous avez placé ${m.fields.fields.at(0).value} points sur la réponse ${m.fields.components[0].components[0].customId.split(' ')[1]}`, ephemeral : true, components : []})
                                         } catch (error) {
                                             console.error("collector5 error", error)
