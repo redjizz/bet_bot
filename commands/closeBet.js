@@ -31,6 +31,7 @@ export async function execute(interaction) {
 			.addComponents(select)
 		const row2 = new ActionRowBuilder()
 			.addComponents(btn)
+		await interaction.editReply("Bet en cours de fermeture.")
 		await interaction.followUp({content:"Choisir une réponse", components : [row, row2], ephemeral : true})
 
 		const collector = interaction.channel.createMessageComponentCollector({time : 30000})
@@ -55,7 +56,8 @@ export async function execute(interaction) {
 						embed.addFields({name: us.displayName, value :'+' + el.gains})
 					}
 				}
-				await i.editReply({content : 'Bet clôturé.', embeds : [embed], components : []})
+				await i.deleteReply()
+				await interaction.editReply({content : 'Bet clôturé. Réponse validée : ' + answers.find(a=>a.ind==answer).answer, embeds : [embed], components : []})
 				await processBetResults(res, interaction.guild.id)
 			}
 		})
