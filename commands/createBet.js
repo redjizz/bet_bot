@@ -137,8 +137,8 @@ export async function execute(interaction) {
                                         try {
                                             if (m.customId !== 'participateModal ' + l.id) return
                                             await m.deferUpdate()
-                                            nbr++
                                             await placeBet(interaction.id, m.member.id, parseInt(m.fields.components[0].components[0].customId.split(' ')[1]), parseInt(m.fields.fields.at(0).value), interaction.guild.id)
+                                            nbr++
                                             await printCotes(interaction, embed)
                                             await k.editReply({content : `Vous avez placé ${m.fields.fields.at(0).value} points sur la réponse ${m.fields.components[0].components[0].customId.split(' ')[1]}`, ephemeral : true, components : []})
                                         } catch (error) {
@@ -168,7 +168,7 @@ export async function execute(interaction) {
                                     embed.addFields({name : 'Réponse : ' + a.value, value : 'Cote : Pas de vote', inline : true})
                                 }
                             })
-                            await interaction.followUp({content : `Participations closes. Le pari compte ${nbr} participants.`, embeds : [embed]})
+                            await interaction.followUp({content : `Participations closes.`})
                         } catch (error) {
                             console.error("coll5 end", error)
                         }
