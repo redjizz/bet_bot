@@ -10,8 +10,8 @@ const commands = [];
 const hidden = []
 const commandsPath = join(__dirname, 'commands');
 const commandFiles = readdirSync(commandsPath).filter(file => file.endsWith('.js'));
-const hiddenPath = join(commandsPath, 'hidden')
-const hiddenFiles = readdirSync(hiddenPath).filter(file=>file.endsWith('.js'))
+// const hiddenPath = join(commandsPath, 'hidden')
+// const hiddenFiles = readdirSync(hiddenPath).filter(file=>file.endsWith('.js'))
 
 for (const file of commandFiles) {
 	const filePath = join(commandsPath, file);
@@ -22,14 +22,14 @@ for (const file of commandFiles) {
 	}
 }
 
-for (const file of hiddenFiles) {
-	const filePath = join(hiddenPath, file);
-	const converted = pathToFileURL(filePath).href
-	const command = await import(converted);
-	if (command.data) {
-		hidden.push(command.data.toJSON());
-	}
-}
+// for (const file of hiddenFiles) {
+// 	const filePath = join(hiddenPath, file);
+// 	const converted = pathToFileURL(filePath).href
+// 	const command = await import(converted);
+// 	if (command.data) {
+// 		hidden.push(command.data.toJSON());
+// 	}
+// }
 
 const rest = new REST({ version: '10' }).setToken(token);
 

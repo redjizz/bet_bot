@@ -60,6 +60,7 @@ client.once('ready', async () => {
 client.on('interactionCreate', async interaction => {
 	try {
 		if (!interaction.isCommand() && !interaction.isAutocomplete()) return
+		if (interaction.guildId == "386210773489287168" && interaction.channelId != "1171863588139442236") return
 		if(interaction.isChatInputCommand()){
 			if(!up) {
 				try {
