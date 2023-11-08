@@ -84,7 +84,7 @@ client.on('interactionCreate', async interaction => {
 	} catch (error) {
 		console.error(error)
 		try {
-			if(interaction.isCommand() && !interaction.deffered) await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true })
+			if(interaction.isCommand() && !interaction.deferred) await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true })
 			else if(interaction.isCommand()) await interaction.editReply({ content: 'There was an error while executing this command!', ephemeral: true })
 		} catch (error) {
 			console.error("Erreur lors de l'envoi du message d'erreur.", error)
