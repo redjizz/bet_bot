@@ -30,19 +30,19 @@ for (const file of commandFiles) {
 
 //IMPORT HIDDEN COMMANDS MODULES
 
-{
-const commandsPath = join(__dirname, 'commands');
-const hiddenPath = join(commandsPath, 'hidden')
-const commandFiles = readdirSync(hiddenPath).filter(file => file.endsWith('.js'));
+// {
+// const commandsPath = join(__dirname, 'commands');
+// const hiddenPath = join(commandsPath, 'hidden')
+// const commandFiles = readdirSync(hiddenPath).filter(file => file.endsWith('.js'));
 
-for (const file of commandFiles) {
-	const filePath = join(hiddenPath, file);
-	const converted = pathToFileURL(filePath).href
-	const command = await import(converted);
-	if(command.data){
-		client.commands.set(command.data.name, command);
-	}
-}}
+// for (const file of commandFiles) {
+// 	const filePath = join(hiddenPath, file);
+// 	const converted = pathToFileURL(filePath).href
+// 	const command = await import(converted);
+// 	if(command.data){
+// 		client.commands.set(command.data.name, command);
+// 	}
+// }}
 
 
 
